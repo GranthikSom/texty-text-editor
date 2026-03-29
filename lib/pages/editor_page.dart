@@ -99,31 +99,23 @@ class _EditorPageState extends State<EditorPage> {
             children: [
               SizedBox(
                 width: 48,
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    if (notification is ScrollUpdateNotification) {
-                      _scrollCtrl.jumpTo(notification.metrics.pixels);
-                    }
-                    return false;
-                  },
-                  child: SingleChildScrollView(
-                    controller: _scrollCtrl,
-                    physics: const NeverScrollableScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8, right: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: List.generate(
-                          lines.length,
-                          (i) => SizedBox(
-                            height: 20,
-                            child: Text(
-                              '${i + 1}',
-                              style: TextStyle(
-                                fontFamily: 'monospace',
-                                fontSize: 12,
-                                color: kLineNum,
-                              ),
+                child: SingleChildScrollView(
+                  controller: _scrollCtrl,
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, right: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: List.generate(
+                        lines.length,
+                        (i) => SizedBox(
+                          height: 20,
+                          child: Text(
+                            '${i + 1}',
+                            style: TextStyle(
+                              fontFamily: 'monospace',
+                              fontSize: 12,
+                              color: kLineNum,
                             ),
                           ),
                         ),
@@ -137,17 +129,28 @@ class _EditorPageState extends State<EditorPage> {
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
                     if (notification is ScrollUpdateNotification) {
+                      if (!_scrollCtrl.hasClients) return false;
                       _scrollCtrl.jumpTo(notification.metrics.pixels);
                     }
                     return false;
                   },
-                  child: SingleChildScrollView(
-                    controller: _scrollCtrl,
-                    padding: const EdgeInsets.all(8),
-                    child: GestureDetector(
-                      onTap: () => _focusNode.requestFocus(),
-                      child: _buildHighlightedText(),
+                  child: TextField(
+                    controller: _ctrl,
+                    focusNode: _focusNode,
+                    maxLines: null,
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 14,
+                      color: kText,
+                      height: 1.43,
                     ),
+                    cursorColor: kAccent,
+                    cursorWidth: 2,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(8),
+                    ),
+                    onChanged: (_) => setState(() {}),
                   ),
                 ),
               ),
@@ -162,6 +165,15 @@ class _EditorPageState extends State<EditorPage> {
     return RichText(
       text: TextSpan(
         children: _highlightCode(_ctrl.text),
+        style: TextStyle(fontFamily: 'monospace', fontSize: 14, height: 1.43),
+      ),
+    );
+  }
+
+  Widget _buildHighlightedLine(String line) {
+    return RichText(
+      text: TextSpan(
+        children: _highlightCode(line),
         style: TextStyle(fontFamily: 'monospace', fontSize: 14, height: 1.43),
       ),
     );
