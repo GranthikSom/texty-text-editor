@@ -19,6 +19,8 @@ class _VimShellState extends State<VimShell> {
   final _commandFocus = FocusNode();
   final _searchCtrl = TextEditingController();
   String _currentPath = '';
+  String _projectPath = '';
+  bool _isProjectOpen = false;
   List<FileSystemEntity> _files = [];
   List<FileSystemEntity> _filteredFiles = [];
   int _selectedIndex = 0;
@@ -29,14 +31,19 @@ class _VimShellState extends State<VimShell> {
   @override
   void initState() {
     super.initState();
-    _openTerminal();
+    _openFolderDialog();
   }
 
-  void _openTerminal() {
-    setState(() {
-      _currentPath = Platform.environment['HOME'] ?? '/';
-      _loadFiles();
-    });
+  Future<void> _openFolderDialog() async {
+    final result = await FilePicker.platform.getDirectoryPath();
+    if (result != null) {
+      setState(() {
+        _projectPath = result;
+        _currentPath = result;
+        _isProjectOpen = true;
+        _loadFiles();
+      });
+    }
   }
 
   void _loadFiles() {
@@ -132,12 +139,27 @@ class _VimShellState extends State<VimShell> {
     final result = await FilePicker.platform.getDirectoryPath();
     if (result != null) {
       setState(() {
+        _projectPath = result;
         _currentPath = result;
+        _isProjectOpen = true;
         _loadFiles();
         _selectedIndex = 0;
         _currentFile = null;
       });
     }
+  }
+
+  void _closeFolder() {
+    setState(() {
+      _isProjectOpen = false;
+      _projectPath = '';
+      _currentPath = '';
+      _files = [];
+      _filteredFiles = [];
+      _selectedIndex = 0;
+      _currentFile = null;
+      _searchCtrl.clear();
+    });
   }
 
   void _handleKey(KeyEvent event) {
@@ -149,7 +171,7 @@ class _VimShellState extends State<VimShell> {
           setState(() => _mode = 1);
           break;
         case LogicalKeyboardKey.keyJ:
-          if (_selectedIndex < _files.length - 1) {
+          if (_selectedIndex < _filteredFiles.length - 1) {
             setState(() => _selectedIndex++);
           }
           break;
@@ -159,8 +181,8 @@ class _VimShellState extends State<VimShell> {
           }
           break;
         case LogicalKeyboardKey.keyL:
-          if (_files.isNotEmpty) {
-            final item = _files[_selectedIndex];
+          if (_filteredFiles.isNotEmpty) {
+            final item = _filteredFiles[_selectedIndex];
             if (item is Directory) {
               setState(() {
                 _currentPath = item.path;
@@ -275,18 +297,18 @@ class _VimShellState extends State<VimShell> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: kAccent,
+                color: kBg,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.palette, size: 12, color: kBg),
+                  Icon(Icons.palette, size: 12, color: kAccent),
                   const SizedBox(width: 4),
                   Text(
                     currentTheme.name,
                     style: TextStyle(
-                      color: kBg,
+                      color: kAccent,
                       fontFamily: 'monospace',
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -302,6 +324,72 @@ class _VimShellState extends State<VimShell> {
   }
 
   Widget _buildSidebar() {
+    if (!_isProjectOpen) {
+      return Container(
+        width: _sidebarWidth,
+        color: kPanel,
+        child: Column(
+          children: [
+            Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: kBorder)),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'EXPLORER',
+                    style: TextStyle(
+                      color: kTextDim,
+                      fontFamily: 'monospace',
+                      fontSize: 10,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: _openFolderDialog,
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: kBorder,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          Icons.folder_open,
+                          size: 40,
+                          color: kAccent,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Open a folder to\nget started',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: kTextDim,
+                        fontFamily: 'monospace',
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       width: _sidebarWidth,
       color: kPanel,
@@ -333,17 +421,6 @@ class _VimShellState extends State<VimShell> {
                 GestureDetector(
                   onTap: _navigateUp,
                   child: Icon(Icons.arrow_upward, size: 14, color: kTextDim),
-                ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _currentPath = Platform.environment['HOME'] ?? '/';
-                      _loadFiles();
-                      _selectedIndex = 0;
-                    });
-                  },
-                  child: Icon(Icons.home, size: 14, color: kTextDim),
                 ),
               ],
             ),
@@ -452,6 +529,58 @@ class _VimShellState extends State<VimShell> {
               },
             ),
           ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: kBorder)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: _openFolder,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: kBorder,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.folder_open, size: 12, color: kText),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Open Folder',
+                            style: TextStyle(
+                              color: kText,
+                              fontFamily: 'monospace',
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: _closeFolder,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: kBorder,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Icon(Icons.close, size: 14, color: kTextDim),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -480,7 +609,7 @@ class _VimShellState extends State<VimShell> {
     return SizedBox(
       height: 180,
       child: TerminalPage(
-        workingDirectory: _currentPath,
+        workingDirectory: _currentPath.isEmpty ? '/' : _currentPath,
         onDirectoryChanged: (path) {
           setState(() {
             _currentPath = path;
