@@ -334,7 +334,7 @@ class _TerminalPageState extends State<TerminalPage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
-                const Text(
+                Text(
                   '~ terminal',
                   style: TextStyle(
                     color: kTextDim,
@@ -348,7 +348,7 @@ class _TerminalPageState extends State<TerminalPage> {
                     _output.clear();
                     setState(() {});
                   },
-                  child: const Icon(Icons.close, size: 14, color: kTextDim),
+                  child: Icon(Icons.close, size: 14, color: kTextDim),
                 ),
               ],
             ),
@@ -364,7 +364,7 @@ class _TerminalPageState extends State<TerminalPage> {
                     children: [
                       Text(
                         '$_currentDir \$ ',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: kTermGreen,
                           fontFamily: 'monospace',
                           fontSize: 12,
@@ -374,14 +374,14 @@ class _TerminalPageState extends State<TerminalPage> {
                         child: TextField(
                           controller: _input,
                           focusNode: _focus,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: kText,
                             fontFamily: 'monospace',
                             fontSize: 12,
                           ),
                           cursorColor: kAccent,
                           cursorWidth: 2,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: InputBorder.none,
                             isCollapsed: true,
                           ),
@@ -393,7 +393,7 @@ class _TerminalPageState extends State<TerminalPage> {
                 }
                 return Text(
                   _output[index],
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: kText,
                     fontFamily: 'monospace',
                     fontSize: 12,

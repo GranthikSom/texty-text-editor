@@ -92,6 +92,42 @@ class _VimShellState extends State<VimShell> {
     });
   }
 
+  void _changeTheme() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: kPanel,
+        title: Text('Select Theme', style: TextStyle(color: kText)),
+        content: SizedBox(
+          width: 200,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: themes.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(themes[index].name, style: TextStyle(color: kText)),
+                selected: currentThemeIndex == index,
+                selectedTileColor: kAccent.withValues(alpha: 0.2),
+                onTap: () {
+                  setState(() {
+                    currentThemeIndex = index;
+                  });
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Close', style: TextStyle(color: kTextDim)),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _openFolder() async {
     final result = await FilePicker.platform.getDirectoryPath();
     if (result != null) {
@@ -218,9 +254,6 @@ class _VimShellState extends State<VimShell> {
   }
 
   Widget _buildStatusBar() {
-    String displayMode = _mode == 0
-        ? 'NORMAL'
-        : (_mode == 1 ? 'INSERT' : 'COMMAND');
     return Container(
       height: 28,
       color: kAccent,
@@ -229,7 +262,7 @@ class _VimShellState extends State<VimShell> {
         children: [
           Text(
             'TEXTY${_currentFile != null ? ' - ${_currentFile!.split('/').last}' : ''}',
-            style: const TextStyle(
+            style: TextStyle(
               color: kBg,
               fontFamily: 'monospace',
               fontSize: 12,
@@ -237,26 +270,30 @@ class _VimShellState extends State<VimShell> {
             ),
           ),
           const Spacer(),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            color: _mode == 0 ? kBg : kPanel,
-            child: Text(
-              '-- $displayMode --',
-              style: TextStyle(
-                color: _mode == 0 ? kAccent : kText,
-                fontFamily: 'monospace',
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: _changeTheme,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: kAccent,
+                borderRadius: BorderRadius.circular(4),
               ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            _showSidebar ? 'SIDEBAR' : '',
-            style: const TextStyle(
-              color: kBg,
-              fontFamily: 'monospace',
-              fontSize: 11,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.palette, size: 12, color: kBg),
+                  const SizedBox(width: 4),
+                  Text(
+                    currentTheme.name,
+                    style: TextStyle(
+                      color: kBg,
+                      fontFamily: 'monospace',
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -273,12 +310,12 @@ class _VimShellState extends State<VimShell> {
           Container(
             height: 32,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: kBorder)),
             ),
             child: Row(
               children: [
-                const Text(
+                Text(
                   'EXPLORER',
                   style: TextStyle(
                     color: kTextDim,
@@ -290,20 +327,12 @@ class _VimShellState extends State<VimShell> {
                 const Spacer(),
                 GestureDetector(
                   onTap: _openFolder,
-                  child: const Icon(
-                    Icons.folder_open,
-                    size: 14,
-                    color: kTextDim,
-                  ),
+                  child: Icon(Icons.folder_open, size: 14, color: kTextDim),
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(
                   onTap: _navigateUp,
-                  child: const Icon(
-                    Icons.arrow_upward,
-                    size: 14,
-                    color: kTextDim,
-                  ),
+                  child: Icon(Icons.arrow_upward, size: 14, color: kTextDim),
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(
@@ -314,7 +343,7 @@ class _VimShellState extends State<VimShell> {
                       _selectedIndex = 0;
                     });
                   },
-                  child: const Icon(Icons.home, size: 14, color: kTextDim),
+                  child: Icon(Icons.home, size: 14, color: kTextDim),
                 ),
               ],
             ),
@@ -329,14 +358,14 @@ class _VimShellState extends State<VimShell> {
             ),
             child: TextField(
               controller: _searchCtrl,
-              style: const TextStyle(
+              style: TextStyle(
                 color: kText,
                 fontFamily: 'monospace',
                 fontSize: 11,
               ),
               cursorColor: kAccent,
               cursorWidth: 1,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Search files...',
                 hintStyle: TextStyle(color: kLineNum, fontSize: 11),
                 prefixIcon: Icon(Icons.search, size: 14, color: kTextDim),
@@ -352,12 +381,12 @@ class _VimShellState extends State<VimShell> {
             color: kBorder.withValues(alpha: 0.3),
             child: Row(
               children: [
-                const Icon(Icons.folder, size: 12, color: kAccent),
+                Icon(Icons.folder, size: 12, color: kAccent),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     _currentPath,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: kTextDim,
                       fontFamily: 'monospace',
                       fontSize: 10,
@@ -402,7 +431,7 @@ class _VimShellState extends State<VimShell> {
                       children: [
                         Text(
                           isDir ? '📁' : '📄',
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12),
                         ),
                         const SizedBox(width: 8),
                         Expanded(

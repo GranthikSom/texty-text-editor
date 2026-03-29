@@ -78,7 +78,7 @@ class _EditorPageState extends State<EditorPage> {
             children: [
               Text(
                 _fileName,
-                style: const TextStyle(
+                style: TextStyle(
                   color: kText,
                   fontFamily: 'monospace',
                   fontSize: 11,
@@ -87,7 +87,7 @@ class _EditorPageState extends State<EditorPage> {
               const Spacer(),
               GestureDetector(
                 onTap: newFile,
-                child: const Icon(Icons.add, size: 14, color: kTextDim),
+                child: Icon(Icons.add, size: 14, color: kTextDim),
               ),
             ],
           ),
@@ -108,7 +108,7 @@ class _EditorPageState extends State<EditorPage> {
                       height: 20,
                       child: Text(
                         '${i + 1}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'monospace',
                           fontSize: 12,
                           color: kLineNum,
@@ -127,7 +127,7 @@ class _EditorPageState extends State<EditorPage> {
                     maxLines: null,
                     expands: true,
                     scrollController: _scrollCtrl,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'monospace',
                       fontSize: 14,
                       color: kText,
@@ -135,7 +135,7 @@ class _EditorPageState extends State<EditorPage> {
                     ),
                     cursorColor: kAccent,
                     cursorWidth: 2,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       isCollapsed: true,
                     ),
