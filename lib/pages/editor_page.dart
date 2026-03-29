@@ -78,7 +78,7 @@ class _EditorPageState extends State<EditorPage> {
           child: Row(
             children: [
               Text(
-                _fileName,
+                _currentFile != null ? _fileName : '[No Name]',
                 style: TextStyle(
                   color: kText,
                   fontFamily: 'monospace',
@@ -99,22 +99,31 @@ class _EditorPageState extends State<EditorPage> {
             children: [
               SizedBox(
                 width: 48,
-                child: SingleChildScrollView(
-                  controller: _scrollCtrl,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: List.generate(
-                        lines.length,
-                        (i) => SizedBox(
-                          height: 20,
-                          child: Text(
-                            '${i + 1}',
-                            style: TextStyle(
-                              fontFamily: 'monospace',
-                              fontSize: 12,
-                              color: kLineNum,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      _scrollCtrl.jumpTo(notification.metrics.pixels);
+                    }
+                    return false;
+                  },
+                  child: SingleChildScrollView(
+                    controller: _scrollCtrl,
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: List.generate(
+                          lines.length,
+                          (i) => SizedBox(
+                            height: 20,
+                            child: Text(
+                              '${i + 1}',
+                              style: TextStyle(
+                                fontFamily: 'monospace',
+                                fontSize: 12,
+                                color: kLineNum,
+                              ),
                             ),
                           ),
                         ),
@@ -125,36 +134,21 @@ class _EditorPageState extends State<EditorPage> {
               ),
               Container(width: 1, color: kBorder),
               Expanded(
-                child: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      controller: _scrollCtrl,
-                      padding: const EdgeInsets.all(8),
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      _scrollCtrl.jumpTo(notification.metrics.pixels);
+                    }
+                    return false;
+                  },
+                  child: SingleChildScrollView(
+                    controller: _scrollCtrl,
+                    padding: const EdgeInsets.all(8),
+                    child: GestureDetector(
+                      onTap: () => _focusNode.requestFocus(),
                       child: _buildHighlightedText(),
                     ),
-                    GestureDetector(
-                      onTap: () => _focusNode.requestFocus(),
-                      child: TextField(
-                        controller: _ctrl,
-                        focusNode: _focusNode,
-                        maxLines: null,
-                        style: TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 14,
-                          color: Colors.transparent,
-                          height: 1.43,
-                        ),
-                        cursorColor: kAccent,
-                        cursorWidth: 2,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          isCollapsed: true,
-                          contentPadding: const EdgeInsets.all(8),
-                        ),
-                        onChanged: (_) => setState(() {}),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],

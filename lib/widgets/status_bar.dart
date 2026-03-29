@@ -44,7 +44,7 @@ class _StatusItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 11,
           fontFamily: 'monospace',
           color: kAccentDim,

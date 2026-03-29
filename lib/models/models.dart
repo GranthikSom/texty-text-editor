@@ -109,14 +109,14 @@ class _HomePageState extends State<HomePage> {
 // ─── Initial Terminal Lines ────────────────────────────────────────────────────
 
 List<TermLine> get kInitialTermLines => [
-  const TermLine('texty@dev:~/project\$ flutter pub get', kTermGreen),
-  const TermLine('Resolving dependencies...', kTextDim),
-  const TermLine('  + cupertino_icons 1.0.8', kText),
-  const TermLine('  + flutter_lints 4.0.0', kText),
-  const TermLine('Changed 2 dependencies!', kString),
-  const TermLine('', kText),
-  const TermLine('texty@dev:~/project\$ flutter run -d chrome', kTermGreen),
-  const TermLine('Launching lib/main.dart on Chrome...', kTextDim),
-  const TermLine('✓ Built build/web', kString),
-  const TermLine('', kText),
+  TermLine('texty@dev:~/project\$ flutter pub get', kTermGreen),
+  TermLine('Resolving dependencies...', kTextDim),
+  TermLine('  + cupertino_icons 1.0.8', kText),
+  TermLine('  + flutter_lints 4.0.0', kText),
+  TermLine('Changed 2 dependencies!', kString),
+  TermLine('', kText),
+  TermLine('texty@dev:~/project\$ flutter run -d chrome', kTermGreen),
+  TermLine('Launching lib/main.dart on Chrome...', kTextDim),
+  TermLine('✓ Built build/web', kString),
+  TermLine('', kText),
 ];

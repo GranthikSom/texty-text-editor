@@ -75,23 +75,23 @@ class _MainEditorPageState extends State<MainEditorPage> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: kPanel,
-        title: const Text('Save Changes?', style: TextStyle(color: kText)),
-        content: const Text(
+        title: Text('Save Changes?', style: TextStyle(color: kText)),
+        content: Text(
           'Do you want to save your changes?',
           style: TextStyle(color: kTextDim),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Don't Save", style: TextStyle(color: kTermRed)),
+            child: Text("Don't Save", style: TextStyle(color: kTermRed)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, null),
-            child: const Text('Cancel', style: TextStyle(color: kTextDim)),
+            child: Text('Cancel', style: TextStyle(color: kTextDim)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Save', style: TextStyle(color: kAccent)),
+            child: Text('Save', style: TextStyle(color: kAccent)),
           ),
         ],
       ),

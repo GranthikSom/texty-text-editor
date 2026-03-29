@@ -29,7 +29,7 @@ class _TitleBarState extends State<TitleBar> {
             ),
           ),
           const SizedBox(width: 8),
-          const Text(
+          Text(
             'TEXTY',
             style: TextStyle(
               fontFamily: 'monospace',

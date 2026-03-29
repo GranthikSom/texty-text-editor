@@ -27,6 +27,8 @@ class _VimShellState extends State<VimShell> {
   double _sidebarWidth = 220;
   bool _showSidebar = true;
   String? _currentFile;
+  bool _showTerminal = true;
+  double _terminalHeight = 180;
 
   @override
   void initState() {
@@ -578,6 +580,20 @@ class _VimShellState extends State<VimShell> {
                     child: Icon(Icons.close, size: 14, color: kTextDim),
                   ),
                 ),
+                if (!_showTerminal) ...[
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () => setState(() => _showTerminal = true),
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: kBorder,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Icon(Icons.terminal, size: 14, color: kTextDim),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -606,16 +622,41 @@ class _VimShellState extends State<VimShell> {
   }
 
   Widget _buildTerminal() {
+    if (!_showTerminal) {
+      return const SizedBox.shrink();
+    }
+
     return SizedBox(
-      height: 180,
-      child: TerminalPage(
-        workingDirectory: _currentPath.isEmpty ? '/' : _currentPath,
-        onDirectoryChanged: (path) {
-          setState(() {
-            _currentPath = path;
-            _loadFiles();
-          });
-        },
+      height: _terminalHeight,
+      child: Column(
+        children: [
+          Expanded(
+            child: TerminalPage(
+              workingDirectory: _currentPath.isEmpty ? '/' : _currentPath,
+              onDirectoryChanged: (path) {
+                setState(() {
+                  _currentPath = path;
+                  _loadFiles();
+                });
+              },
+              onClose: () {
+                setState(() => _showTerminal = false);
+              },
+            ),
+          ),
+          MouseRegion(
+            cursor: SystemMouseCursors.resizeRow,
+            child: GestureDetector(
+              onVerticalDragUpdate: (d) => setState(() {
+                _terminalHeight = (_terminalHeight - d.delta.dy).clamp(
+                  100.0,
+                  500.0,
+                );
+              }),
+              child: Container(height: 4, color: kBorder),
+            ),
+          ),
+        ],
       ),
     );
   }
