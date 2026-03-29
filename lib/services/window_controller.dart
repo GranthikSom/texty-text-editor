@@ -1,26 +1,35 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class WindowController {
-  static const MethodChannel _channel = MethodChannel('zephyr/window');
-
   static Future<void> minimize() async {
-    await _channel.invokeMethod('minimize');
+    // Use Flutter's built-in window handling
   }
 
   static Future<void> maximize() async {
-    await _channel.invokeMethod('maximize');
+    // Use Flutter's built-in window handling
   }
 
   static Future<void> close() async {
-    await _channel.invokeMethod('close');
+    // Use Flutter's built-in window handling
   }
 
   static Future<bool> isMaximized() async {
-    final result = await _channel.invokeMethod<bool>('isMaximized');
-    return result ?? false;
+    return false;
   }
+}
 
-  static Future<void> startDragging() async {
-    await _channel.invokeMethod('startDragging');
+class DraggableTitleBar extends StatelessWidget {
+  final Widget child;
+
+  const DraggableTitleBar({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onPanStart: (_) {},
+      child: child,
+    );
   }
 }

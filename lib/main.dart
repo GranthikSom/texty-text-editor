@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 import 'theme/colors.dart';
-import 'pages/editor_shell.dart';
-import 'services/editor_state.dart';
+import 'pages/vim_shell.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => EditorState(),
-      child: const ZephyrApp(),
-    ),
-  );
+  runApp(const VimApp());
 }
 
-class ZephyrApp extends StatelessWidget {
-  const ZephyrApp({super.key});
+class VimApp extends StatelessWidget {
+  const VimApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Zephyr Editor',
+      title: 'Zephyr',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: const EditorShell(),
+      home: const VimShell(),
     );
   }
 }

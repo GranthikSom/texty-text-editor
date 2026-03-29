@@ -3,6 +3,8 @@ import FlutterMacOS
 
 @main
 class AppDelegate: FlutterAppDelegate {
+  var flutterWindow: NSWindow?
+
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
     return true
   }
@@ -12,40 +14,9 @@ class AppDelegate: FlutterAppDelegate {
   }
 
   override func applicationDidFinishLaunching(_ notification: Notification) {
-    setupMethodChannel()
+    flutterWindow = NSApplication.shared.windows.first
     setupMainMenu()
     super.applicationDidFinishLaunching(notification)
-  }
-
-  private func setupMethodChannel() {
-    let controller = window?.contentViewController as! FlutterViewController
-    let channel = FlutterMethodChannel(name: "zephyr/window", binaryMessenger: controller.binaryMessenger)
-    
-    channel.setMethodCallHandler { [weak self] (call, result) in
-      guard let window = self?.window else {
-        result(FlutterError(code: "NO_WINDOW", message: "No window available", details: nil))
-        return
-      }
-      
-      switch call.method {
-      case "minimize":
-        window.miniaturize(nil)
-        result(nil)
-      case "maximize":
-        window.zoom(nil)
-        result(nil)
-      case "close":
-        window.close()
-        result(nil)
-      case "isMaximized":
-        result(window.isZoomed)
-      case "startDragging":
-        window.performDrag(nil)
-        result(nil)
-      default:
-        result(FlutterMethodNotImplemented)
-      }
-    }
   }
 
   private func setupMainMenu() {
@@ -153,51 +124,16 @@ class AppDelegate: FlutterAppDelegate {
     NSApplication.shared.mainMenu = mainMenu
   }
 
-  @objc func newFile(_ sender: Any?) {
-    NSLog("New File action triggered")
-  }
-
-  @objc func openFile(_ sender: Any?) {
-    NSLog("Open File action triggered")
-  }
-
-  @objc func saveFile(_ sender: Any?) {
-    NSLog("Save File action triggered")
-  }
-
-  @objc func saveFileAs(_ sender: Any?) {
-    NSLog("Save As action triggered")
-  }
-
-  @objc func toggleSidebar(_ sender: Any?) {
-    NSLog("Toggle Sidebar action triggered")
-  }
-
-  @objc func toggleTerminal(_ sender: Any?) {
-    NSLog("Toggle Terminal action triggered")
-  }
-
-  @objc func runCode(_ sender: Any?) {
-    NSLog("Run action triggered")
-  }
-
-  @objc func debugCode(_ sender: Any?) {
-    NSLog("Debug action triggered")
-  }
-
-  @objc func buildCode(_ sender: Any?) {
-    NSLog("Build action triggered")
-  }
-
-  @objc func newTerminal(_ sender: Any?) {
-    NSLog("New Terminal action triggered")
-  }
-
-  @objc func splitTerminal(_ sender: Any?) {
-    NSLog("Split Terminal action triggered")
-  }
-
-  @objc func clearTerminal(_ sender: Any?) {
-    NSLog("Clear Terminal action triggered")
-  }
+  @objc func newFile(_ sender: Any?) {}
+  @objc func openFile(_ sender: Any?) {}
+  @objc func saveFile(_ sender: Any?) {}
+  @objc func saveFileAs(_ sender: Any?) {}
+  @objc func toggleSidebar(_ sender: Any?) {}
+  @objc func toggleTerminal(_ sender: Any?) {}
+  @objc func runCode(_ sender: Any?) {}
+  @objc func debugCode(_ sender: Any?) {}
+  @objc func buildCode(_ sender: Any?) {}
+  @objc func newTerminal(_ sender: Any?) {}
+  @objc func splitTerminal(_ sender: Any?) {}
+  @objc func clearTerminal(_ sender: Any?) {}
 }

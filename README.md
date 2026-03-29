@@ -1,23 +1,21 @@
-# Zephyr Editor
+# Zephyr - Vim-like Code Editor
 
-A modern, cross-platform text editor built with Flutter.
+A modern, lightweight code editor with vim-style keybindings built with Flutter.
 
 ## Features
 
-- **File Explorer** - Browse and manage project files
-- **Code Editor** - Syntax highlighting with line numbers
+- **Vim-style Editing** - Normal, Insert, and Command modes
+- **File Explorer** - Browse and navigate your project files
+- **Search** - Find files quickly in the sidebar
 - **Integrated Terminal** - Run commands directly in the editor
-- **Git Integration** - View staged and unstaged changes
-- **Search** - Find files and content across your project
-- **Resizable Panels** - Drag to resize sidebar and terminal
-- **Native Window Controls** - Close, minimize, and maximize windows
+- **Syntax Highlighting** - Basic code highlighting with line numbers
 
 ## Getting Started
 
 ### Prerequisites
 
 - Flutter SDK 3.11.1 or higher
-- macOS 10.15 or higher (for macOS development)
+- macOS 10.15 or higher
 
 ### Installation
 
@@ -30,7 +28,7 @@ cd texty
 flutter pub get
 
 # Run the app
-flutter run
+flutter run -d macos
 ```
 
 ### Building for macOS
@@ -41,41 +39,53 @@ flutter build macos
 
 ## Keyboard Shortcuts
 
-| Action | Shortcut |
-|--------|----------|
-| New File | ⌘N |
-| Open File | ⌘O |
-| Save | ⌘S |
-| Undo | ⌘Z |
-| Redo | ⇧⌘Z |
-| Cut | ⌘X |
-| Copy | ⌘C |
-| Paste | ⌘V |
-| Select All | ⌘A |
-| Toggle Sidebar | ⌘B |
-| Toggle Terminal | ⌘` |
-| Run | ⌘R |
+| Key | Action |
+|-----|--------|
+| `i` | Enter Insert mode |
+| `Esc` | Return to Normal mode |
+| `:` | Enter Command mode |
+| `j` | Navigate down (in explorer) |
+| `k` | Navigate up (in explorer) |
+| `l` | Open file/folder (in explorer) |
+| `h` | Go to parent directory |
+| `b` | Toggle sidebar |
+| `q` | Quit application |
+| `:q` | Quit (Command mode) |
+| `:e <path>` | Open path |
+| `:r` | Refresh files |
+
+## Terminal Commands
+
+- `ls [path]` - List directory contents
+- `cd <path>` - Change directory
+- `pwd` - Print working directory
+- `cat <file>` - Display file contents
+- `mkdir <name>` - Create directory
+- `touch <name>` - Create file
+- `rm <name>` - Remove file/directory
+- `clear` - Clear terminal
+- `help` - Show available commands
+- `exit` - Exit application
+
+## Screenshots
+
+<!-- Add your screenshots below -->
+
+![Screenshot 1](screenshots/screenshot1.png)
 
 ## Project Structure
 
 ```
 lib/
-├── main.dart                 # App entry point
+├── main.dart              # App entry point
 ├── theme/
-│   └── colors.dart           # Color theme
-├── models/
-│   └── models.dart           # Data models
+│   └── colors.dart        # Color theme
 ├── pages/
-│   ├── editor_shell.dart     # Main layout
-│   ├── main_editor_page.dart # Editor view
-│   ├── side_panel_page.dart  # File explorer
-│   └── terminal_page.dart    # Terminal
-├── widgets/
-│   ├── title_bar.dart        # Custom title bar
-│   ├── status_bar.dart       # Status bar
-│   └── shared_widgets.dart   # Reusable widgets
-└── services/
-    └── window_controller.dart # Window controls
+│   ├── vim_shell.dart     # Main vim shell
+│   ├── editor_page.dart   # Code editor
+│   └── terminal_page.dart # Terminal
+└── widgets/
+    └── shared_widgets.dart
 ```
 
 ## License
