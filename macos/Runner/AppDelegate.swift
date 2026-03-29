@@ -25,7 +25,7 @@ class AppDelegate: FlutterAppDelegate {
     // App Menu
     let appMenuItem = NSMenuItem()
     let appMenu = NSMenu()
-    appMenu.addItem(withTitle: "About Zephyr Editor", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
+    appMenu.addItem(withTitle: "About Texty Editor", action: #selector(NSApplication.orderFrontStandardAboutPanel(_:)), keyEquivalent: "")
     appMenu.addItem(NSMenuItem.separator())
     appMenu.addItem(withTitle: "Preferences...", action: nil, keyEquivalent: ",")
     appMenu.addItem(NSMenuItem.separator())
@@ -34,7 +34,7 @@ class AppDelegate: FlutterAppDelegate {
     hideOthersItem.keyEquivalentModifierMask = [.command, .option]
     appMenu.addItem(withTitle: "Show All", action: #selector(NSApplication.unhideAllApplications(_:)), keyEquivalent: "")
     appMenu.addItem(NSMenuItem.separator())
-    appMenu.addItem(withTitle: "Quit Zephyr Editor", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+    appMenu.addItem(withTitle: "Quit Texty Editor", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
     appMenuItem.submenu = appMenu
     mainMenu.addItem(appMenuItem)
 

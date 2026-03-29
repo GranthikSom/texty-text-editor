@@ -228,7 +228,7 @@ class _VimShellState extends State<VimShell> {
       child: Row(
         children: [
           Text(
-            'ZEPHYR${_currentFile != null ? ' - ${_currentFile!.split('/').last}' : ''}',
+            'TEXTY${_currentFile != null ? ' - ${_currentFile!.split('/').last}' : ''}',
             style: const TextStyle(
               color: kBg,
               fontFamily: 'monospace',

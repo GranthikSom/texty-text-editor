@@ -28,7 +28,7 @@ class _TerminalPageState extends State<TerminalPage> {
   void initState() {
     super.initState();
     _currentDir = widget.workingDirectory;
-    _output.add('Zephyr Terminal v1.0');
+    _output.add('Texty Terminal v1.0');
     _output.add('Type "help" for available commands.');
     _output.add('');
     _startShell();

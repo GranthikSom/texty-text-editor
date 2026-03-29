@@ -13,7 +13,7 @@ class VimApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Zephyr',
+      title: 'Texty',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
       home: const VimShell(),

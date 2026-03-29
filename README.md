@@ -1,4 +1,4 @@
-# Zephyr - Vim-like Code Editor
+# Texty - Vim-like Code Editor
 
 A modern, lightweight code editor with vim-style keybindings built with Flutter.
 

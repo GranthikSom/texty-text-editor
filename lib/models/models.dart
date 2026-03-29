@@ -28,16 +28,16 @@ class FileNode {
 // ─── Static Demo Data ──────────────────────────────────────────────────────────
 
 const List<FileNode> kDemoTree = [
-  FileNode(icon: '📁', name: 'lib',          depth: 0, isDir: true),
-  FileNode(icon: '🎯', name: 'main.dart',    depth: 1, isDir: false),
-  FileNode(icon: '🎯', name: 'app.dart',     depth: 1, isDir: false),
-  FileNode(icon: '📁', name: 'widgets',      depth: 1, isDir: true),
-  FileNode(icon: '🎯', name: 'editor.dart',  depth: 2, isDir: false),
-  FileNode(icon: '🎯', name: 'panel.dart',   depth: 2, isDir: false),
-  FileNode(icon: '📁', name: 'models',       depth: 1, isDir: true),
-  FileNode(icon: '🎯', name: 'file.dart',    depth: 2, isDir: false),
+  FileNode(icon: '📁', name: 'lib', depth: 0, isDir: true),
+  FileNode(icon: '🎯', name: 'main.dart', depth: 1, isDir: false),
+  FileNode(icon: '🎯', name: 'app.dart', depth: 1, isDir: false),
+  FileNode(icon: '📁', name: 'widgets', depth: 1, isDir: true),
+  FileNode(icon: '🎯', name: 'editor.dart', depth: 2, isDir: false),
+  FileNode(icon: '🎯', name: 'panel.dart', depth: 2, isDir: false),
+  FileNode(icon: '📁', name: 'models', depth: 1, isDir: true),
+  FileNode(icon: '🎯', name: 'file.dart', depth: 2, isDir: false),
   FileNode(icon: '📄', name: 'pubspec.yaml', depth: 0, isDir: false),
-  FileNode(icon: '📄', name: 'README.md',    depth: 0, isDir: false),
+  FileNode(icon: '📄', name: 'README.md', depth: 0, isDir: false),
 ];
 
 const String kDemoCode = '''import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Build the widget tree
     return MaterialApp(
-      title: 'Zephyr Editor',
+      title: 'Texty Editor',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.teal,
@@ -109,13 +109,13 @@ class _HomePageState extends State<HomePage> {
 // ─── Initial Terminal Lines ────────────────────────────────────────────────────
 
 List<TermLine> get kInitialTermLines => [
-  const TermLine('zephyr@dev:~/project\$ flutter pub get', kTermGreen),
+  const TermLine('texty@dev:~/project\$ flutter pub get', kTermGreen),
   const TermLine('Resolving dependencies...', kTextDim),
   const TermLine('  + cupertino_icons 1.0.8', kText),
-  const TermLine('  + flutter_lints 4.0.0',   kText),
-  const TermLine('Changed 2 dependencies!',   kString),
+  const TermLine('  + flutter_lints 4.0.0', kText),
+  const TermLine('Changed 2 dependencies!', kString),
   const TermLine('', kText),
-  const TermLine('zephyr@dev:~/project\$ flutter run -d chrome', kTermGreen),
+  const TermLine('texty@dev:~/project\$ flutter run -d chrome', kTermGreen),
   const TermLine('Launching lib/main.dart on Chrome...', kTextDim),
   const TermLine('✓ Built build/web', kString),
   const TermLine('', kText),
