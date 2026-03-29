@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'theme/colors.dart';
 import 'pages/editor_shell.dart';
+import 'services/editor_state.dart';
 
 void main() {
-  runApp(const ZephyrApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => EditorState(),
+      child: const ZephyrApp(),
+    ),
+  );
 }
 
 class ZephyrApp extends StatelessWidget {
